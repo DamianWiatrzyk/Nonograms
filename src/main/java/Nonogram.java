@@ -1,4 +1,3 @@
-
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.constraints.nary.automata.FA.FiniteAutomaton;
 import org.chocosolver.solver.constraints.nary.automata.FA.IAutomaton;
