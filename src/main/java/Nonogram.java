@@ -1,29 +1,46 @@
+import com.google.gson.Gson;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.constraints.nary.automata.FA.FiniteAutomaton;
 import org.chocosolver.solver.constraints.nary.automata.FA.IAutomaton;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.util.tools.ArrayUtils;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class Nonogram {
     // number of columns
-    private int N = 15;
-    // number of rows
-    private int M = 15;
+
     private Model model = new Model("Nonogram");
     // Variables declaration
-    private BoolVar[][] cells = model.boolVarMatrix("c", N, M);
+    private BoolVar[][] cells;
 
     private boolean isSolved = false;
 
-    public void modelAndSolve(int[][][] Puzzle) {
+
+    public void modelAndSolve(String path) {
+        Gson gson = new Gson();
+        String text = null;
+        try {
+            text = new String(Files.readAllBytes(Paths.get(path)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Puzzle pz = gson.fromJson(text, Puzzle.class);
+        int N = pz.getN();
+        int M = pz.getM();
+        int[][] puzzleY = pz.getPuzzleY();
+        int[][] puzzleX = pz.getPuzzleX();
+        this.cells = model.boolVarMatrix("c", N, M);
         for (int i = 0; i < M; i++) {
-            dfa(cells[i], Puzzle[0][i], model);
+            dfa(cells[i], puzzleY[i], model);
         }
         for (int j = 0; j < N; j++) {
-            dfa(ArrayUtils.getColumn(cells, j), Puzzle[1][j], model);
+            dfa(ArrayUtils.getColumn(cells, j), puzzleX[j], model);
         }
-        if(model.getSolver().solve()){
-            this.isSolved=true;
+        if (model.getSolver().solve()) {
+            this.isSolved = true;
         }
     }
 
@@ -43,7 +60,7 @@ public class Nonogram {
         return cells;
     }
 
-    public void printCells(){
+    public void printCells() {
         for (int i = 0; i < cells.length; i++) {
             System.out.printf("\t");
             for (int j = 0; j < cells[i].length; j++) {
@@ -56,4 +73,27 @@ public class Nonogram {
     public boolean isSolved() {
         return isSolved;
     }
+
+    private void loadStringFromFile(String file){
+        String text = "";
+        try {
+            text = new String(Files.readAllBytes(Paths.get(file)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void loadPuzzleFromJSON(String path){
+        Gson gson = new Gson();
+        String text = null;
+        try {
+            text = new String(Files.readAllBytes(Paths.get(path)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Puzzle pz = gson.fromJson(text, Puzzle.class);
+
+    }
+
 }
