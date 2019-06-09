@@ -10,12 +10,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class Nonogram {
-    // number of columns
-
     private Model model = new Model("Nonogram");
-    // Variables declaration
     private BoolVar[][] cells;
-
     private boolean isSolved = false;
 
 
@@ -74,26 +70,5 @@ public class Nonogram {
         return isSolved;
     }
 
-    private void loadStringFromFile(String file){
-        String text = "";
-        try {
-            text = new String(Files.readAllBytes(Paths.get(file)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public void loadPuzzleFromJSON(String path){
-        Gson gson = new Gson();
-        String text = null;
-        try {
-            text = new String(Files.readAllBytes(Paths.get(path)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Puzzle pz = gson.fromJson(text, Puzzle.class);
-
-    }
 
 }
