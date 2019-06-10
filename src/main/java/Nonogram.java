@@ -10,11 +10,14 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class Nonogram {
+<<<<<<< HEAD
 
     private Model model = new Model("Nonogram");
     
+=======
+    private Model model = new Model("Nonogram");
+>>>>>>> bd64824ff4e0c8d8e0147059854e28dde61401d9
     private BoolVar[][] cells;
-
     private boolean isSolved = false;
     
     private int N;
@@ -93,6 +96,7 @@ public class Nonogram {
         return isSolved;
     }
 
+<<<<<<< HEAD
     public void loadPuzzleFromJSON(String path){
         Gson gson = new Gson();
         String text = null;
@@ -104,5 +108,7 @@ public class Nonogram {
         Puzzle pz = gson.fromJson(text, Puzzle.class);
 
     }
+=======
+>>>>>>> bd64824ff4e0c8d8e0147059854e28dde61401d9
 
 }
