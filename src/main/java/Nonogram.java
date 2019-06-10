@@ -10,13 +10,17 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class Nonogram {
-    // number of columns
 
     private Model model = new Model("Nonogram");
-    // Variables declaration
+    
     private BoolVar[][] cells;
 
     private boolean isSolved = false;
+    
+    private int N;
+    private int M;
+    private int[][] puzzleY;
+    private int[][] puzzleX;
 
 
     public void modelAndSolve(String path) {
@@ -28,10 +32,10 @@ public class Nonogram {
             e.printStackTrace();
         }
         Puzzle pz = gson.fromJson(text, Puzzle.class);
-        int N = pz.getN();
-        int M = pz.getM();
-        int[][] puzzleY = pz.getPuzzleY();
-        int[][] puzzleX = pz.getPuzzleX();
+        N = pz.getN();
+        M = pz.getM();
+        puzzleY = pz.getPuzzleY();
+        puzzleX = pz.getPuzzleX();
         this.cells = model.boolVarMatrix("c", N, M);
         for (int i = 0; i < M; i++) {
             dfa(cells[i], puzzleY[i], model);
@@ -59,7 +63,22 @@ public class Nonogram {
     public BoolVar[][] getCells() {
         return cells;
     }
-
+    
+    public int getWidth() {
+        return M;
+    }
+    
+    public int getHeight() {
+        return N;
+    }   
+    
+    public int[][] getRows() {
+        return puzzleY;
+    }
+    
+    public int[][] getColumns() {
+        return puzzleX;
+    }       
     public void printCells() {
         for (int i = 0; i < cells.length; i++) {
             System.out.printf("\t");
@@ -72,16 +91,6 @@ public class Nonogram {
 
     public boolean isSolved() {
         return isSolved;
-    }
-
-    private void loadStringFromFile(String file){
-        String text = "";
-        try {
-            text = new String(Files.readAllBytes(Paths.get(file)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
 
     public void loadPuzzleFromJSON(String path){

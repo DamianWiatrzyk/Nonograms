@@ -7,5 +7,6 @@ public class Main {
         if(temp.isSolved()){
             temp.printCells();
         }
+        
     }
 }

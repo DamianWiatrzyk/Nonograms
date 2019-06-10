@@ -5,7 +5,7 @@ public class Puzzle {
     int[][] puzzleX;
 
     public Puzzle(int N, int M, int[][] puzzleY, int[][] puzzleX){
-        this.N=N;
+        this.N = N;
         this.M = M;
         this.puzzleY = puzzleY;
         this.puzzleX = puzzleX;
